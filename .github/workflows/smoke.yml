@@ -1,0 +1,19 @@
+name: Desktop CI acceptance
+on:
+  push:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  synthetic-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Verify synthetic sample on an actual runner
+        run: |
+          python3 - <<'PYTEST'
+          import hashlib
+          value = b"desktop-ci-synthetic-42"
+          assert len(value) == 23
+          assert hashlib.sha256(value).hexdigest() == "244bbe68774e62c1414880a6ca095c8cda764749741d54f0eadb30e300929d3c"
+          print("DESKTOP-CI-SYNTHETIC-PASSED-42")
+          PYTEST
